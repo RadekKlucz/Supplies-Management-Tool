@@ -15,9 +15,9 @@ INSERT INTO Ingredients(Id, Name) VALUES (2, 'Carrot');
 INSERT INTO Ingredients(Id, Name) VALUES (3, 'Tomato');
 INSERT INTO Ingredients(Id, Name) VALUES (4, 'Milk');
 
-INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredients_Id) VALUES ( 1, 1 );
-INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredients_Id) VALUES ( 2, 2 );
-INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredients_Id) VALUES ( 1, 3 );
-INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredients_Id) VALUES ( 1, 4 );
-INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredients_Id) VALUES ( 2, 1 );
-INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredients_Id) VALUES ( 2, 4 );
+INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredient_Id) VALUES ( 1, 1 );
+INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredient_Id) VALUES ( 2, 2 );
+INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredient_Id) VALUES ( 1, 3 );
+INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredient_Id) VALUES ( 1, 4 );
+INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredient_Id) VALUES ( 2, 1 );
+INSERT INTO Recipes_Ingredients(Recipe_Id, Ingredient_Id) VALUES ( 2, 4 );

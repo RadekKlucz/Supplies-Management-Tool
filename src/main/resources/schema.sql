@@ -20,11 +20,11 @@ CREATE TABLE Ingredients(
 
 CREATE TABLE Recipes_Ingredients(
     Recipe_Id BIGINT NOT NULL,
-    Ingredients_Id BIGINT NOT NULL
+    Ingredient_Id BIGINT NOT NULL
 );
 
 ALTER TABLE Recipes_Ingredients ADD CONSTRAINT RecipesIngredients_Id_1 FOREIGN KEY (Recipe_Id) REFERENCES Recipes(Id);
-ALTER TABLE Recipes_Ingredients ADD CONSTRAINT RecipesIngredients_Id_2 FOREIGN KEY (Ingredients_Id) REFERENCES Ingredients(Id);
+ALTER TABLE Recipes_Ingredients ADD CONSTRAINT RecipesIngredients_Id_2 FOREIGN KEY (Ingredient_Id) REFERENCES Ingredients(Id);
 
 
 -- ALTER TABLE Ingredients ADD CONSTRAINT Ingredients_Recipe_Id FOREIGN KEY (Recipe_Id) REFERENCES Recipes(Id);

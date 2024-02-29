@@ -15,6 +15,4 @@ public class Supplies {
     private String name;
     private long quantity;
     private LocalDateTime updated;
-
-
 }

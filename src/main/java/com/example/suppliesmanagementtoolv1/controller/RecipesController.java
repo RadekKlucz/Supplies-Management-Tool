@@ -1,6 +1,7 @@
 package com.example.suppliesmanagementtoolv1.controller;
 
 import com.example.suppliesmanagementtoolv1.dto.RecipesDto;
+import com.example.suppliesmanagementtoolv1.model.Ingredients;
 import com.example.suppliesmanagementtoolv1.model.Recipes;
 import com.example.suppliesmanagementtoolv1.service.RecipesService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +20,16 @@ public class RecipesController {
         this.recipesService = recipesService;
     }
     @GetMapping(path = "/recipes")
-    public List<RecipesDto> getRecipes(@RequestParam(required = false) int page) {
-        int pageNumber = page >= 0 ? page : 0;
-        return RecipesDtoMapper.mapToDtos(recipesService.getAllRecipes(pageNumber));
+    public List<RecipesDto> getRecipes(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        int pageNumber = page != null && page > 0 ? page : 0;
+        int sizeNumber = size != null && size > 0 ? size : 20;
+        return RecipesDtoMapper.mapToDtos(recipesService.getAllRecipes(pageNumber, sizeNumber));
     }
 
     @GetMapping(path = "/recipes/{id}")
     public Recipes getRecipe(@PathVariable long id) {
         return recipesService.getSingleRecipe(id);
     }
+
+
 }

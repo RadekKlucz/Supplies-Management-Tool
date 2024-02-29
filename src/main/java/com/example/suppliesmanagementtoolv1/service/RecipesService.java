@@ -11,16 +11,18 @@ import java.util.List;
 public class RecipesService {
 
     private final RecipesRepository recipesRepository;
-    private static final int PAGE_SIZE = 5;
+//    private static final int PAGE_SIZE = 5;
 
     public RecipesService(RecipesRepository recipesRepository) {
         this.recipesRepository = recipesRepository;
     }
-    public List<Recipes> getAllRecipes(int page) {
-        return recipesRepository.findAllRecipes(PageRequest.of(page, PAGE_SIZE));
+    public List<Recipes> getAllRecipes(int page, int sizeNumber) {
+        return recipesRepository.findAllRecipes(PageRequest.of(page, sizeNumber));
     }
 
     public Recipes getSingleRecipe(long id) {
         return recipesRepository.findById(id).orElseThrow();
     }
+
+
 }

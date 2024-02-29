@@ -17,7 +17,7 @@ public class Recipes {
 
     @ManyToMany
     @JoinTable(name = "Recipes_Ingredients", joinColumns = @JoinColumn(name = "Recipe_Id",
-    referencedColumnName = "Id"), inverseJoinColumns = @JoinColumn(name = "Ingredients_Id",
+    referencedColumnName = "Id"), inverseJoinColumns = @JoinColumn(name = "Ingredient_Id",
     referencedColumnName = "Id"))
     private List<Ingredients> ingredientsList;
 }
