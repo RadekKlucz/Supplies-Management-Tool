@@ -2,7 +2,6 @@ package com.example.suppliesmanagementtoolv1.controller;
 
 import com.example.suppliesmanagementtoolv1.model.Supplies;
 import com.example.suppliesmanagementtoolv1.service.SuppliesService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
