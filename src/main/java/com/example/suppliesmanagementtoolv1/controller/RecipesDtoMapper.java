@@ -1,6 +1,5 @@
 package com.example.suppliesmanagementtoolv1.controller;
 
-import com.example.suppliesmanagementtoolv1.dto.RecipeDto;
 import com.example.suppliesmanagementtoolv1.dto.RecipesDto;
 import com.example.suppliesmanagementtoolv1.model.Recipes;
 

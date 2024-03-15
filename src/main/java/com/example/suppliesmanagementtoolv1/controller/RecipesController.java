@@ -4,10 +4,7 @@ import com.example.suppliesmanagementtoolv1.dto.RecipesDto;
 import com.example.suppliesmanagementtoolv1.model.Ingredients;
 import com.example.suppliesmanagementtoolv1.model.Recipes;
 import com.example.suppliesmanagementtoolv1.service.RecipesService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,19 @@ public class RecipesController {
         return recipesService.getSingleRecipe(id);
     }
 
+    @PostMapping(path = "/recipes")
+    public Recipes postRecipe(@RequestBody Recipes recipe) {
+        return recipesService.postNewRecipe(recipe);
+    }
+
+//    @PostMapping(path = "/recipes/{id}")
+//    public Ingredients postRecipe(@PathVariable int id, @RequestBody List<Ingredients> ingredients) {
+//        return (Ingredients) recipesService.postIngredientsForRecipe(id, ingredients);
+//    }
+
+    @PutMapping(path = "/recipes")
+    public Recipes putRecipe(@RequestBody Recipes recipe) {
+        return recipesService.editRecipe(recipe);
+    }
 
 }
