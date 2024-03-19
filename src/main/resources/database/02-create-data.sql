@@ -1,3 +1,5 @@
+--liquibase formatted sql
+--changeset rkluczewski:1
 INSERT INTO Recipes( Name, Description) VALUES ( 'Recipe of tomato soup', 'Add tomato, potato and boil them in the watter');
 INSERT INTO Recipes( Name, Description) VALUES (  'Recipe of Milk', 'Add milk');
 
