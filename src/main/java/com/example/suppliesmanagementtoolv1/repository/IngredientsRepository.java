@@ -17,6 +17,7 @@ public interface IngredientsRepository extends JpaRepository<Ingredients, Long> 
 
     List<Ingredients> findAllByNameIn(Set<Ingredients> ingredientsList);
 
+
 //    List<Ingredients> findAllByNameIsIn(List<Ingredients> ingredientsList);
 
 //    @Modifying

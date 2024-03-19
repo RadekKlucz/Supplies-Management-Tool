@@ -4,10 +4,12 @@ import com.example.suppliesmanagementtoolv1.config.ResourceNotFoundException;
 import com.example.suppliesmanagementtoolv1.model.Ingredients;
 import com.example.suppliesmanagementtoolv1.service.IngredientsService;
 import lombok.RequiredArgsConstructor;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,31 +35,34 @@ public class IngredientsController {
         return ingredientsService.addIngredients(ingredientsList);
     }
 
-//    Should the method be added?
-//    @PutMapping(path = "/ingredients")
-
-//    @DeleteMapping(path = "/ingredients")
-//    public void deleteIngredients(@RequestParam List<Long> ids) {
-//        ingredientsService.deleteIngredientsByIds(ids);
-//    }
-
-    @PostMapping(path = "/recipes/{id}/ingredients")
+    @PostMapping(path = "/recipes/{id}/ingredients") // will be moved to recipes
     public ResponseEntity<List<Ingredients>> addIngredient(@PathVariable Long id, @RequestBody List<Ingredients> ingredientRequest) {
         return ingredientsService.postIngredients(id, ingredientRequest);
     }
 
     @PutMapping(path = "/ingredients")
     public List<Ingredients> editIngredients(@RequestBody List<Ingredients> ingredientsList) {
-        return ingredientsService.putIngredients(ingredientsList);
+        List<Ingredients> result = new ArrayList<>();
+        List<Ingredients> existingIngredients = ingredientsService.getIngredientsByIds(ingredientsList);
+        for (Ingredients ingredient: ingredientsList) {
+            for (Ingredients existingIngredient: existingIngredients) {
+                if (ingredient.getId() == existingIngredient.getId()) {
+                    result.add(ingredientsService.putIngredient(existingIngredient, ingredient));
+                }
+            }
+        }
+        return result;
     }
 
-//    @DeleteMapping(path = "ingredients/{id}")
-//    public ResponseEntity<Object> removeIngredient(@PathVariable Long id) {
-//        try {
-//            ingredientsService.deleteIngredient(id);
-//            return new ResponseEntity<>("Ingredient with " + id + " has been deleted.", HttpStatus.OK);
-//        } catch (ResourceNotFoundException e){
-//            return new ResponseEntity<>("Ingredient with " + id + " has not been deleted.", HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @DeleteMapping(path = "ingredients/{id}") // find accurate exception for catch
+    public ResponseEntity<Object> removeIngredient(@PathVariable Long id) {
+        try {
+            ingredientsService.deleteIngredient(id);
+            return new ResponseEntity<>("Ingredient with " + id + " has been deleted.", HttpStatus.OK);
+        } catch (ResourceNotFoundException e){
+            return new ResponseEntity<>("Ingredient with " + id + " has not been deleted because it does not exist.", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Ingredient with " + id + " has assigned recipe. Cannot delete this ingredient",HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
 }

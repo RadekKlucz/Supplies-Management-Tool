@@ -13,4 +13,6 @@ public interface SuppliesRepository extends JpaRepository<Supplies, Long> {
 
     @Query("SELECT supplies FROM Supplies AS supplies")
     List<Supplies> findAllSupplies(Pageable page);
+
+    List<Supplies> findAllByNameIn(List<String> names);
 }

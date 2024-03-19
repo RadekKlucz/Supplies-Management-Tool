@@ -2,9 +2,14 @@ package com.example.suppliesmanagementtoolv1.service;
 
 import com.example.suppliesmanagementtoolv1.config.ResourceNotFoundException;
 import com.example.suppliesmanagementtoolv1.model.Ingredients;
+import com.example.suppliesmanagementtoolv1.model.Recipes;
 import com.example.suppliesmanagementtoolv1.repository.IngredientsRepository;
 import com.example.suppliesmanagementtoolv1.repository.RecipesRepository;
 import lombok.RequiredArgsConstructor;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +27,23 @@ public class IngredientsService {
     private final IngredientsRepository ingredientsRepository;
     private final RecipesRepository recipesRepository;
 
+    @Cacheable(cacheNames = "AllIngredients")
     public List<Ingredients> getAllIngredients(int page, int size) {
         return ingredientsRepository.findAllIngredients(PageRequest.of(page, size));
     }
 
+    @Cacheable(cacheNames = "SingleIngredient", key = "#id")
     public Ingredients getSingleIngredient(long id) {
-        return ingredientsRepository.findById(id).orElseThrow();
+        return ingredientsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ingredient has not been found"));
     }
 
+    @CacheEvict(cacheNames = "AllIngredients", allEntries = true)
     public List<Ingredients> addIngredients(List<Ingredients> ingredientsList) {
         return ingredientsRepository.saveAll(ingredientsList);
 //        Should be added a restriction where the existing ingredients will be not upload into the database?
     }
 
+//    in the future it will be moved to recipes
     public ResponseEntity<List<Ingredients>> postIngredients(long id, List<Ingredients> ingredientsRequest) {
         List<Ingredients> addedIngredients = new ArrayList<>();
 
@@ -62,21 +71,23 @@ public class IngredientsService {
         return new ResponseEntity<>(addedIngredients, HttpStatus.CREATED);
     }
 
-    public List<Ingredients> putIngredients(List<Ingredients> ingredientsList) {
-        List<Long> ingredientsIds = ingredientsList.stream()
-                .map(Ingredients::getId)
-                .collect(Collectors.toList());
-        List<Ingredients> editedIngredients = ingredientsRepository.findAllById(ingredientsIds);
-        for (Ingredients ingredient : ingredientsList) {
-            for (Ingredients editedIngredient : editedIngredients) {
-                editedIngredient.setName(ingredient.getName());
-            }
-        }
-        return ingredientsRepository.saveAll(editedIngredients);
+    @CachePut(cacheNames = "SingleIngredient", key = "#result.id")
+    @CacheEvict(cacheNames = "AllIngredients", allEntries = true)
+    public Ingredients putIngredient(Ingredients editedIngredient, Ingredients ingredient) {
+        editedIngredient.setName(ingredient.getName());
+        return ingredientsRepository.save(editedIngredient);
     }
 
-//    public void deleteIngredient(Long id) {
-//        ingredientsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ingredient has not been found"));
-//        ingredientsRepository.deleteById(id);
-//    }
+    @CacheEvict(cacheNames = {"AllIngredients", "SingleIngredient"}, allEntries = true)
+    public void deleteIngredient(Long id) {
+        ingredientsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ingredient has not been found"));
+        ingredientsRepository.deleteById(id);
+    }
+
+    public List<Ingredients> getIngredientsByIds(List<Ingredients> ingredientsList) {
+        List<Long> idsOfIngredients = ingredientsList.stream()
+                .map(Ingredients::getId)
+                .collect(Collectors.toList());
+        return ingredientsRepository.findAllById(idsOfIngredients);
+    }
 }

@@ -34,6 +34,7 @@ public class SuppliesController {
 
     @PostMapping(path = "/supplies")
     public List<Supplies> postListOfSupplies(@RequestBody List<Supplies> suppliesList) {
+//        List<Supplies> existingSupplies = suppliesService.getSuppliesByNames(suppliesList); // is it required?
         return suppliesService.postSupplies(suppliesList);
     }
 

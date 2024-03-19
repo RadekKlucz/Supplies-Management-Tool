@@ -4,6 +4,7 @@ import com.example.suppliesmanagementtoolv1.dto.RecipesDto;
 import com.example.suppliesmanagementtoolv1.model.Ingredients;
 import com.example.suppliesmanagementtoolv1.model.Recipes;
 import com.example.suppliesmanagementtoolv1.service.RecipesService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,14 +34,15 @@ public class RecipesController {
         return recipesService.postNewRecipe(recipe);
     }
 
-//    @PostMapping(path = "/recipes/{id}")
-//    public Ingredients postRecipe(@PathVariable int id, @RequestBody List<Ingredients> ingredients) {
-//        return (Ingredients) recipesService.postIngredientsForRecipe(id, ingredients);
-//    }
-
     @PutMapping(path = "/recipes")
     public Recipes putRecipe(@RequestBody Recipes recipe) {
         return recipesService.editRecipe(recipe);
+    }
+
+    @DeleteMapping(path = "/recipes/{id}")
+    public ResponseEntity<String> removeRecipe(@PathVariable long id) {
+        recipesService.deleteRecipe(id);
+        return ResponseEntity.ok("Recipe with id: " + id + " has been deleted");
     }
 
 }

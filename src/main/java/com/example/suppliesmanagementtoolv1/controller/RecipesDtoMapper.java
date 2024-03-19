@@ -12,11 +12,11 @@ public class RecipesDtoMapper {
 
     public static List<RecipesDto> mapToDtos(List<Recipes> recipes) {
         return recipes.stream()
-                    .map(recipe -> mapToRecipleDto(recipe))
+                    .map(RecipesDtoMapper::mapToRecipeDto)
                     .collect(Collectors.toList());
         }
 
-    private static RecipesDto mapToRecipleDto(Recipes recipe) {
+    private static RecipesDto mapToRecipeDto(Recipes recipe) {
             return RecipesDto.builder()
                     .id(recipe.getId())
                     .name(recipe.getName())

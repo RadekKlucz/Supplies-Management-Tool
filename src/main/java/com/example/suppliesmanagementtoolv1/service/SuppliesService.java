@@ -63,4 +63,11 @@ public class SuppliesService {
         return suppliesRepository.findAllById(idsOfSupplies);
     }
 
+    public List<Supplies> getSuppliesByNames(List<Supplies> suppliesList) {
+        List<String> namesOfSupplies = suppliesList.stream()
+                .map(Supplies::getName)
+                .collect(Collectors.toList());
+        return suppliesRepository.findAllByNameIn(namesOfSupplies);
+    }
+
 }
